@@ -7,7 +7,7 @@ import face_recognition
 import os
 import rsa
 from werkzeug.utils import secure_filename
-import hmac
+import hmac  
 import hashlib
 from cryptography.hazmat.primitives.asymmetric import padding
 from cryptography.hazmat.primitives import hashes, serialization
