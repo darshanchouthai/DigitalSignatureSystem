@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verify Multi-Signature</title>
+    <style>
+        /* General Body Styling */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #eef2f7;
+            margin: 0;
+            padding: 0;
+            color: #50382c;
+        }
+
+        /* Header Styling */
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px 20px;
+            background-color: #36438f;
+            color: white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 1.8em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-align: center;
+        }
+
+        .back-button {
+            position: absolute;
+            left: 20px;
+            background-color: white;
+            color: #007bff;
+            padding: 10px 20px;
+            font-size: 14px;
+            font-weight: bold;
+            text-decoration: none;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .back-button:hover {
+            background-color: #0056b3;
+            color: white;
+        }
+
+        /* Container Styling */
+        .container {
+            width: 90%;
+            max-width: 1000px;
+            margin: 50px auto;
+            padding: 30px;
+            background-color: #ffffff;
+            border-radius: 16px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: white;
+            font-size: 2em;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        label {
+            font-size: 16px;
+            font-weight: bold;
+            color: #34495e;
+            margin-top: 10px;
+            margin-bottom: 5px;
+            display: block;
+        }
+
+        textarea {
+            width: 95%;
+            padding: 15px;
+            font-size: 14px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background-color: #e7e0e0;
+            resize: none;
+            height: 120px;
+            font-family: 'Courier New', monospace;
+            color: #2c3e50;
+            overflow-y: auto;
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: #3498db;
+            box-shadow: 0 0 6px rgba(52, 152, 219, 0.3);
+        }
+
+        /* Message List Styling */
+        .message-list {
+            margin-top: 30px;
+        }
+
+        .message-item {
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 12px;
+            background-color: #f9fafc;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .message-item:hover {
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .message-item p {
+            margin: 8px 0;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        button {
+            background-color: #5b8bca;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            font-size: 14px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            text-transform: uppercase;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        button:active {
+            transform: translateY(2px);
+        }
+
+        .error {
+            color: red;
+            font-size: 14px;
+            margin-bottom: 15px;
+            text-align: center;
+            font-weight: bold;
+        }
+        .text-area-first {
+    background-color: #fcf7f8;
+}
+
+.text-area-second {
+    background-color: #e6f7ff;
+}
+
+.text-area-third {
+    background-color: #c3ddc3;
+}
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.5em;
+            }
+
+            .container {
+                padding: 20px;
+            }
+
+            h1 {
+                font-size: 1.8em;
+            }
+
+            button {
+                font-size: 12px;
+                padding: 10px 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <a href="/generate_signature" class="back-button">Dashboard</a>
+        <h1 color="white">Verify Multi-Signature</h1>
+    </div>
+
+    <div class="container">
+        {% if error %}
+            <p class="error">{{ error }}</p>
+        {% endif %}
+
+        <!-- Display User's Private Key -->
+        <div class="textarea-box">
+            <label for="display_private_key">Your Private Key:</label>
+            <textarea id="display_private_key" name="display_private_key" class="text-area-first" readonly>
+                {% if private_key %}{{ private_key|e }}{% endif %}
+            </textarea>
+        </div>
+
+        <!-- Display Messages from Database -->
+        <div class="message-list">
+            {% if messages and messages|length > 0 %}
+                {% for message in messages %}
+                    <div class="message-item">
+                        <p><strong>Message ID:</strong> {{ message.message_id }}</p>
+                        <p><strong>Sender ID:</strong> {{ message.sender_id }}</p>
+                        <p><strong>Co-Owner ID:</strong> {{ message.co_owner_id }}</p>
+                        <p><strong>Signature:</strong></p>
+                        <textarea readonly class="text-area-second">{{ message.signature }}</textarea>
+                        <form method="POST" style="margin-top: 10px;">
+                            <input type="hidden" name="message_id" value="{{ message.message_id }}">
+                            <label for="private_key">Enter Your Private Key:</label>
+                            <textarea id="private_key" name="private_key" class="text-area-third" placeholder="Paste your private key here..." required></textarea>
+                            <button type="submit">Decode Message</button>
+                        </form>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p>No messages available for verification.</p>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>

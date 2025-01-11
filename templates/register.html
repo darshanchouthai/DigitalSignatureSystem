@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration Page</title>
+    <style>
+        /* General Styling */
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to bottom, #287488, #f9f9f9);
+            color: #333;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        h1 {
+            color: #fff;
+            margin-bottom: 20px;
+            font-size: 2.5rem;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        form {
+            width: 100%;
+            max-width: 400px;
+            padding: 30px;
+            background-color: #ffffff;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            text-align: left;
+        }
+
+        label {
+            font-weight: bold;
+            color: #555;
+            display: block;
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 20px;
+            font-size: 16px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #007BFF;
+            box-shadow: 0 0 8px rgba(0, 123, 255, 0.3);
+        }
+
+        video, canvas {
+            margin-top: 20px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            width: 100%;
+            max-width: 100%;
+        }
+
+        button {
+            display: inline-block;
+            width: 100%;
+            padding: 12px;
+            font-size: 16px;
+            font-weight: bold;
+            color: white;
+            background-color: #007BFF;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+            transform: translateY(-2px);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        p {
+            margin-top: 20px;
+            font-size: 14px;
+            color: #555;
+            text-align: center;
+        }
+
+        a {
+            color: #007BFF;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .error {
+            color: red;
+            font-size: 14px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .success {
+            color: green;
+            font-size: 14px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+
+            form {
+                padding: 20px;
+            }
+
+            input[type="text"], button {
+                font-size: 14px;
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <h1>Registration Page</h1>
+        <form method="POST" action="/register">
+            <label for="userId">User ID:</label>
+            <input type="text" id="userId" name="userId" required>
+
+            <div>
+                <video id="video" autoplay></video>
+                <canvas id="canvas" style="display: none;"></canvas>
+                <br>
+                <button type="button" id="captureButton">Capture Face</button>
+            </div>
+
+            <input type="hidden" id="faceImage" name="faceImage">
+            <br>
+
+            <button type="submit">Register</button>
+        </form>
+        <p>Already have an account? <a href="/">Login here</a></p>
+    </div>
+
+    <script>
+        const video = document.getElementById('video');
+        const canvas = document.getElementById('canvas');
+        const faceImageInput = document.getElementById('faceImage');
+        const captureButton = document.getElementById('captureButton');
+
+        // Access webcam
+        navigator.mediaDevices.getUserMedia({ video: true })
+            .then((stream) => {
+                video.srcObject = stream;
+            })
+            .catch((err) => {
+                console.error("Error accessing webcam: ", err);
+                alert("Unable to access webcam. Please ensure it's connected and permissions are granted.");
+            });
+
+        // Capture image on button click
+        captureButton.addEventListener('click', () => {
+            const context = canvas.getContext('2d');
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            context.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+            // Convert the captured image to Base64
+            const imageData = canvas.toDataURL('image/png');
+            faceImageInput.value = imageData;
+            alert('Face image captured successfully!');
+        });
+    </script>
+</body>
+</html>

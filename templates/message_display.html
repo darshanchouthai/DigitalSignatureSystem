@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unlocked Message</title>
+    <style>
+        /* General Body Styling */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+
+        /* Container Styling */
+        .container {
+            width: 90%;
+            max-width: 800px;
+            margin: 80px auto;
+            padding: 30px;
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        /* Heading Styling */
+        h1 {
+            color: #34495e;
+            font-size: 2.2em;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+        }
+
+        /* Message Box Styling */
+        .message-box {
+            margin-top: 20px;
+            background-color: #f8faff; /* Light blue background */
+            padding: 20px;
+            border-radius: 12px;
+            border: 1px solid #cce1f4;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+            text-align: left;
+            color: #34495e;
+        }
+
+        .message-box p {
+            margin: 10px 0;
+            font-size: 1.1em;
+            line-height: 1.6;
+        }
+
+        .message-box strong {
+            color: #2c3e50;
+        }
+
+        /* Back Button Styling */
+        .back-btn {
+            display: inline-block;
+            padding: 12px 24px;
+            background-color: #4CAF50;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            margin-top: 20px;
+            font-size: 1em;
+            font-weight: bold;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .back-btn:hover {
+            background-color: #45a049;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                width: 95%;
+                padding: 20px;
+            }
+
+            h1 {
+                font-size: 1.8em;
+            }
+
+            .message-box {
+                padding: 15px;
+            }
+
+            .message-box p {
+                font-size: 1em;
+            }
+
+            .back-btn {
+                font-size: 0.9em;
+                padding: 10px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Unlocked Message</h1>
+
+        <div class="message-box">
+            <p><strong>Decoded Message:</strong></p>
+            <p>{{ message }}</p>
+        </div>
+
+        <a href="{{ url_for('generate_signature') }}" class="back-btn">Back to Home</a>
+    </div>
+</body>
+</html>

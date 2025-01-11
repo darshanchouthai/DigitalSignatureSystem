@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digital Signature</title>
+    <style>
+/* General Body Styling */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f3f7fb; /* Softer and modern background */
+    margin: 0;
+    padding: 0;
+    line-height: 1.6; /* Better text spacing */
+    color: #2d3436; /* Neutral dark text color */
+}
+
+/* Main Container */
+.container {
+    width: 90%;
+    max-width: 1100px;
+    margin: 50px auto;
+    padding: 30px; /* Increased padding for spacious design */
+    background-color: #ffffff;
+    border-radius: 16px; /* More rounded corners for a modern look */
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15); /* Subtle but defined shadow */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.container:hover {
+    transform: translateY(-5px); /* Slight lift on hover */
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2); /* Stronger shadow on hover */
+}
+
+/* Heading */
+h1 {
+    text-align: center;
+    color: #34495e; /* Slightly muted dark color */
+    font-size: 2.5em; /* Increased font size */
+    margin-bottom: 20px;
+    text-transform: uppercase; /* Uppercase for boldness */
+    letter-spacing: 2px; /* Spacing for readability */
+    font-weight: bold;
+}
+
+/* Buttons */
+button {
+    padding: 14px 28px;
+    background-color: #3498db; /* Blue for primary actions */
+    color: white;
+    border: none;
+    font-size: 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    margin: 10px;
+    transition: all 0.3s ease; /* Smooth transition for all states */
+    box-shadow: 0 4px 8px rgba(52, 152, 219, 0.2); /* Subtle shadow */
+}
+
+button:hover {
+    background-color: #2980b9; /* Darker blue on hover */
+    box-shadow: 0 6px 12px rgba(41, 128, 185, 0.3); /* Stronger shadow on hover */
+    transform: translateY(-3px); /* Slight lift */
+}
+
+button:active {
+    background-color: #1d6a96; /* Even darker blue on click */
+    transform: translateY(0);
+}
+
+/* Section Styling */
+.section {
+    margin-top: 20px;
+    display: none;
+    padding: 20px;
+    border-radius: 10px;
+    background-color: #f9fbfd; /* Light background for sections */
+    border: 1px solid #dfe6e9; /* Subtle border */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Light shadow */
+}
+
+/* Labels and Inputs */
+label {
+    font-size: 1.1em;
+    margin-bottom: 8px;
+    display: block;
+    color: #2c3e50; /* Muted dark text */
+    font-weight: 500; /* Slightly bold for better visibility */
+}
+
+input[type="text"], textarea {
+    width: 90%;
+    padding: 15px;
+    margin: 10px 0;
+    border: 1px solid #bdc3c7;
+    border-radius: 8px;
+    font-size: 16px;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+input[type="text"]:focus, textarea:focus {
+    border-color: #3498db; /* Blue highlight on focus */
+    box-shadow: 0 0 8px rgba(52, 152, 219, 0.5); /* Blue glow */
+    outline: none;
+}
+
+textarea {
+    resize: vertical; /* Allow vertical resizing only */
+    min-height: 120px; /* Ensure a decent starting height */
+}
+
+/* Output Area */
+.output {
+    margin-top: 20px;
+    font-size: 14px;
+}
+
+.output p {
+    margin: 5px 0;
+    font-weight: 500; /* Slightly bold for visibility */
+}
+
+/* Message Items */
+.message-item {
+    padding: 15px;
+    margin: 15px 0;
+    border: 1px solid #dfe6e9;
+    border-radius: 8px;
+    background-color: #ffffff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.message-item:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.message-item p {
+    margin: 8px 0;
+    font-size: 14px;
+    color: #34495e; /* Neutral text color */
+}
+
+/* Success and Error Messages */
+.error {
+    color: #e74c3c; /* Bright red for errors */
+    font-weight: bold;
+}
+
+.success {
+    color: #13ce29 !important; /* Bright green */
+    font-weight: bold;
+    font-size: 1.2em;
+    margin-top: 10px;
+    padding: 10px; /* Add space around the message */
+    background-color: #f0fff4; /* Light green background for better contrast */
+    border: 1px solid #13ce29; /* Green border for emphasis */
+    border-radius: 8px; /* Smooth corners */
+    text-align: center; /* Center-align text for better appearance */
+    box-shadow: 0 2px 4px rgba(19, 206, 41, 0.2); /* Subtle shadow for focus */
+}
+
+
+
+/* Main Output Box */
+.output-box {
+    margin-top: 20px;
+    padding: 20px;
+    border: 1px solid #dfe6e9;
+    border-radius: 12px;
+    background-color: #f8f9fa;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+    width: 90%;
+}
+
+.output-box p {
+    margin: 10px 0;
+    font-size: 16px;
+    color: #2c3e50;
+}
+
+/* Nested Signature Box */
+.signature-box {
+    margin-top: 20px; /* Slightly increased margin for better spacing */
+    padding: 20px; /* Increased padding for content comfort */
+    border: 1px solid #dfe6e9;
+    border-radius: 12px; /* More rounded corners for modern design */
+    background-color: #ffffff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Slightly more pronounced shadow */
+    width: 95%; /* Ensure it takes up full width within the container */
+    overflow: hidden; /* Avoid content overflow */
+    transition: box-shadow 0.3s ease, transform 0.3s ease; /* Smooth hover effects */
+}
+
+.signature-box:hover {
+    transform: translateY(-3px); /* Slight lift on hover */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); /* Stronger shadow on hover */
+}
+
+.signature-box pre {
+    font-size: 14px; /* Maintain readable font size */
+    white-space: pre-wrap; /* Wrap long content */
+    word-wrap: break-word; /* Ensure long words break appropriately */
+    margin: 0;
+    background-color: #f8faff; /* Slightly blue background for distinction */
+    padding: 15px; /* Comfortable padding for text */
+    border-radius: 8px; /* Match the outer box for consistency */
+    border: 1px solid #cce1f4; /* Soft blue border */
+    overflow-x: auto; /* Allow horizontal scrolling for long content */
+    color: #34495e; /* Neutral text color for readability */
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05); /* Soft inner shadow for focus */
+    font-family: 'Courier New', Courier, monospace; /* Monospace font for code-like content */
+}
+
+/* Add Responsive Design for Smaller Screens */
+@media (max-width: 768px) {
+    .signature-box {
+        padding: 15px; /* Reduce padding for smaller screens */
+        border-radius: 10px; /* Slightly less rounded for smaller devices */
+    }
+
+    .signature-box pre {
+        font-size: 13px; /* Slightly smaller font for smaller screens */
+        padding: 10px; /* Adjust padding for smaller screens */
+    }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .container {
+        width: 95%;
+        padding: 20px;
+    }
+
+    button {
+        font-size: 14px;
+        padding: 10px 18px; /* Adjust padding for smaller screens */
+    }
+
+    h1 {
+        font-size: 2em;
+    }
+
+    label {
+        font-size: 1em;
+    }
+}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Digital Signature Generation and Verification</h1>
+
+        <a href="/logout">
+            <button id="logout-button">Logout</button>
+        </a>
+        
+
+        <!-- Initial Options -->
+        <div id="options">
+            <button onclick="showSection('generate-signature-section')">Generate Signature</button>
+            <button onclick="location.href='/verify_signature'">Verify Signature</button>
+            <button onclick="showSection('multi-signature-section')">Co-Owner Signature</button>
+            <button onclick="location.href='/verify_multi_signature'">Verify Multi-Signature</button>
+        </div>
+
+        <!-- Generate Signature Section -->
+        <div id="generate-signature-section" class="section">
+            <h2>Generate Signature</h2>
+            <label for="receiverName">Receiver Name:</label>
+            <input type="text" id="receiverName" required placeholder="Enter receiver's username">
+
+            <label for="coOwnerName">Co-Owner Name (Optional):</label>
+            <input type="text" id="coOwnerName" placeholder="Enter co-owner's username">
+
+            <label for="messageText">Message:</label>
+            <textarea id="messageText" rows="4" required placeholder="Enter the message to sign"></textarea>
+
+            <button id="generate-signature-button" onclick="generateSignature()">Generate Signature</button>
+            <div id="generate-output" class="output"></div>
+        </div>
+         <!-- Verify Signature Section -->
+         <div id="verify-signature-section" class="section" style="display:none;">
+            <h2>Verify Signature</h2>
+
+            <!-- Display private key here -->
+            <label for="privateKey">Your Private Key:</label>
+            <textarea id="privateKey" readonly>{{ private_key }}</textarea>
+
+            <div id="message-list" class="message-list"></div>
+
+            <div id="verify-output" class="output"></div>
+        </div>
+
+
+        <!-- Co-Owner Signature Section -->
+        <div id="multi-signature-section" class="section">
+            <h2>Co-Owner Signature</h2>
+            <div id="co-owner-messages" class="output"></div>
+        </div>
+
+        
+    </div>
+
+    <script>
+        // Show appropriate section
+        function showSection(sectionId) {
+            const sections = document.querySelectorAll('.section');
+            sections.forEach(section => section.style.display = 'none');
+            document.getElementById(sectionId).style.display = 'block';
+
+            // Fetch messages for co-owner if the section is "multi-signature-section"
+            if (sectionId === 'multi-signature-section') {
+                fetchCoOwnerMessages();
+            }
+        }
+        function generateSignature() {
+    // Fetch input values
+    const receiverName = document.getElementById('receiverName').value.trim();
+    const coOwnerName = document.getElementById('coOwnerName').value.trim();
+    const messageText = document.getElementById('messageText').value.trim();
+
+    // Validate inputs
+    if (!receiverName || !messageText) {
+        alert('Receiver Name and Message are required!');
+        return;
+    }
+
+    // API call to generate the encrypted message
+    fetch('/generate_signature', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ receiverName, coOwnerName, messageText })
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        return response.json();
+    })
+    .then(data => {
+        const output = document.getElementById('generate-output');
+        if (data.encryptedMessage) {
+            // Success response with dynamic co-owner section
+            output.innerHTML = `
+                <div class="output-box">
+                    <div class="success">
+                        <p>Encrypted message generated successfully!</p>
+                    </div>
+                    <p><strong>Message ID:</strong> ${data.messageId}</p>
+                    <p><strong>Receiver ID:</strong> ${data.receiverId}</p>
+                    ${coOwnerName ? `<p><strong>Co-Owner ID:</strong> ${coOwnerName}</p>` : ''}
+                    <p><strong>Expiry Time:</strong> ${data.expiryTime}</p>
+                    <div class="signature-box">
+                        <p><strong>Encrypted Message:</strong></p>
+                        <pre>${data.encryptedMessage}</pre>
+                    </div>
+                </div>
+            `;
+        } else {
+            // Error response from backend
+            output.innerHTML = `<div class="output-box"><p class="error">${data.error}</p></div>`;
+        }
+    })
+    .catch(error => {
+        // Network or server error handling
+        const output = document.getElementById('generate-output');
+        output.innerHTML = `
+            <div class="output-box">
+                <p class="error">An error occurred: ${error.message}</p>
+            </div>
+        `;
+        console.error('Error in generateSignature:', error);
+    });
+}
+
+
+        // Fetch Co-Owner Messages
+        function fetchCoOwnerMessages() {
+    fetch('/get_co_owner_messages', { method: 'GET' })
+    .then(response => response.json())
+    .then(data => {
+        const container = document.getElementById('co-owner-messages');
+        container.innerHTML = '';
+
+        if (data.messages && data.messages.length > 0) {
+            data.messages.forEach(message => {
+                const timeRemaining = message.remaining_time > 0
+                    ? `${Math.floor(message.remaining_time / 3600)}h ${Math.floor((message.remaining_time % 3600) / 60)}m`
+                    : '<span style="color: red;">Expired</span>';
+
+                container.innerHTML += `
+                    <div class="message-item" style="border: 1px solid #ddd; border-radius: 8px; padding: 15px; margin-bottom: 20px; background-color: #f9fafc; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+                        <p><strong>From:</strong> ${message.sender_id}</p>
+                         <textarea readonly style="width: 95%; height: 100px; resize: none; padding: 10px; font-family: monospace; border: 1px solid #ddd; border-radius: 6px; background-color: #eef2f7;">${message.message}</textarea>
+                        <p><strong>Time Remaining:</strong> ${timeRemaining}</p>
+                        <label><strong>Signature:</strong></label>
+                       
+                        <button onclick="addSignature(${message.id})" style="margin-top: 10px; background-color: #007bff; color: white; padding: 10px 15px; border: none; border-radius: 6px; cursor: pointer; transition: background-color 0.3s;">
+                            Sign Message
+                        </button>
+                    </div>
+                `;
+            });
+        } else {
+            container.innerHTML = '<p>No messages available to sign.</p>';
+        }
+    })
+    .catch(error => {
+        console.error('Error fetching co-owner messages:', error);
+        document.getElementById('co-owner-messages').innerHTML = `<p class="error">Error fetching messages: ${error.message}</p>`;
+    });
+}
+
+
+        // Add Co-Owner Signature
+        function addSignature(messageId) {
+            fetch('/add_signature', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ messageId })
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert(data.success ? 'Message signed successfully!' : data.error);
+                fetchCoOwnerMessages();
+            })
+            .catch(error => {
+                console.error('Error adding signature:', error);
+            });
+        }
+
+    </script>
+</body>
+</html>

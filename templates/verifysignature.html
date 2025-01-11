@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digital Signature Verification</title>
+    <style>
+        /* General Body Styling */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Header Styling */
+        .header {
+            width: 100%;
+            background-color: #36438f;
+            color: white;
+            display: flex;
+            align-items: center;
+            padding: 10px 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            position: sticky; /* Sticks to the top when scrolling */
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header .back-btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: white;
+            color: #4CAF50;
+            text-decoration: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: bold;
+            border: 2px solid white;
+            transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+        }
+
+        .header .back-btn:hover {
+            background-color: #45a049;
+            color: white;
+            border-color: #45a049;
+        }
+
+        .header h1 {
+            margin: 0 auto; /* Center the title in the header */
+            font-size: 1.8em;
+            text-align: center;
+            flex-grow: 1; /* Ensures the title takes up the available space */
+        }
+
+        /* Main Container Styling */
+        .container {
+            width: 90%;
+            max-width: 1100px;
+            margin: 80px auto 50px; /* Adjusted for header height */
+            padding: 20px;
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+
+        label {
+            font-size: 16px;
+            margin-bottom: 8px;
+            display: block;
+            color: #555;
+        }
+
+        textarea#privateKey {
+            width: 95%;
+            height: 150px;
+            padding: 12px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 16px;
+            background-color: #f7f9fc;
+            color: #333;
+            font-family: monospace;
+            resize: none;
+        }
+
+        .message-list {
+            margin-top: 20px;
+        }
+
+        .message-item {
+            background-color: #fff;
+            padding: 20px;
+            margin: 15px 0;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .message-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .signature-box, .receiver-public-key-box {
+            background-color: #f9f9f9;
+            padding: 15px;
+            margin-top: 10px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            font-family: monospace;
+            color: #333;
+        }
+
+        .signature-box {
+            background-color: #e6f7ff;
+            border: 1px solid #a7d8f0;
+        }
+
+        .receiver-public-key-box {
+            background-color: #e0ffe0;
+            border: 1px solid #b0e4b0;
+        }
+
+        .signature-box pre, .receiver-public-key-box pre {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            font-size: 14px;
+            margin: 0;
+        }
+
+        .button-link {
+            display: inline-block;
+            padding: 10px 20px;
+            font-size: 16px;
+            color: white;
+            background-color: #007bff;
+            text-decoration: none;
+            border-radius: 6px;
+            border: none;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        .button-link:hover {
+            background-color: #0056b3;
+            transform: translateY(-2px);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                width: 95%;
+                padding: 15px;
+            }
+
+            h2 {
+                font-size: 1.8em;
+            }
+
+            .message-item {
+                padding: 15px;
+            }
+
+            .button-link {
+                font-size: 14px;
+                padding: 8px 16px;
+            }
+
+            .header h1 {
+                font-size: 1.5em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header with Back Button -->
+    <header class="header">
+        <a href="{{ url_for('generate_signature') }}" class="back-btn">Back</a>
+        <h1>Digital Signature Verification</h1>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container">
+        <h2>Verify Signature</h2>
+
+        <!-- Display private key -->
+        <label for="privateKey">Your Private Key:</label>
+        <textarea id="privateKey" readonly>{{ private_key }}</textarea>
+
+        <!-- Display messages -->
+        <div id="message-list" class="message-list">
+            {% if messages %}
+                {% for message1 in messages %}
+                    <div class="message-item">
+                        <p><strong>Sender:</strong> {{ message1.sender_id }}</p>
+                        <p><strong>Message ID:</strong>{{message1.id}}</p>
+                        <p><strong>Signature:</strong></p>
+                        <div class="signature-box">
+                            <pre>{{ message1.signature }}</pre>
+                        </div>
+                        <p><strong>Receiver's Public Key:</strong></p>
+                        <div class="receiver-public-key-box">
+                            <pre>{{message1.receiver_public_key }}</pre>
+                        </div>
+                        <a href="{{ url_for('unlock_message', messageId=message1['id']) }}" class="button-link">Unlock Message</a>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p>No messages are available.</p>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>
