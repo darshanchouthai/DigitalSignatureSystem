@@ -17,6 +17,7 @@ app = Flask(__name__)
 app.secret_key = '41f4cfa3623d79af0b306d17f321d482'  # Secure key for session management
 
 # Database Configuration
+#use urs database password
 DB_CONFIG = {
     'host': 'localhost',
     'database': 'Digisignature',
