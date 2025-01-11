@@ -18,7 +18,6 @@ app.secret_key = '41f4cfa3623d79af0b306d17f321d482'  # Secure key for session ma
 
 # Database Configuration
 #use urs database password
-
 DB_CONFIG = {
     'host': 'localhost',
     'database': 'Digisignature',
