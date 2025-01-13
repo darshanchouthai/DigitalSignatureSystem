@@ -150,7 +150,7 @@ def logout():
 
 
 
-def compare_faces(stored_image, login_image, tolerance=0.6, detection_model="cnn"):
+def compare_faces(stored_image, login_image, tolerance=0.55, detection_model="cnn"):
     """
     Compare two face images for similarity using face_recognition with improved detection.
     
