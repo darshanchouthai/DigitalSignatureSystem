@@ -148,27 +148,48 @@ def logout():
     return render_template("login.html")
 
 
-def compare_faces(stored_image, login_image):
+
+
+def compare_faces(stored_image, login_image, tolerance=0.6, detection_model="cnn"):
     """
-    Compare two face images for similarity using face_recognition.
-    Return True if faces match, else False.
+    Compare two face images for similarity using face_recognition with improved detection.
+    
+    Parameters:
+    - stored_image: Image data for the stored face.
+    - login_image: Image data for the face to compare.
+    - tolerance: Face comparison tolerance (default is 0.6).
+    - detection_model: Use "hog" for speed or "cnn" for better accuracy.
+    
+    Returns:
+    - bool: True if the faces match, False otherwise.
     """
     try:
-        # Encode the stored and login face images
-        stored_encoding = face_recognition.face_encodings(stored_image)
-        login_encoding = face_recognition.face_encodings(login_image)
-
-        # Ensure that both images have detectable faces
-        if len(stored_encoding) == 0 or len(login_encoding) == 0:
-            print("No face detected in one of the images.")
+        # Detect and encode the stored image
+        stored_encodings = face_recognition.face_encodings(stored_image)
+        if not stored_encodings:
+            print("No face detected in the stored image.")
             return False
+        stored_encoding = stored_encodings[0]
 
-        # Compare faces
-        match_results = face_recognition.compare_faces([stored_encoding[0]], login_encoding[0], tolerance=0.6)
-        return match_results[0]
+        # Detect and encode the login image
+        login_encodings = face_recognition.face_encodings(login_image)
+        if not login_encodings:
+            print("No face detected in the login image.")
+            return False
+        login_encoding = login_encodings[0]
+
+        # Compare faces using face distance for better threshold control
+        face_distance = face_recognition.face_distance([stored_encoding], login_encoding)[0]
+        is_match = face_distance <= tolerance
+        
+        # Debugging information
+        print(f"Face distance: {face_distance}, Tolerance: {tolerance}")
+        
+        return is_match
     except Exception as e:
         print(f"Error in face comparison: {e}")
         return False
+
 
 from datetime import datetime, timedelta
 
