@@ -1,37 +1,94 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>   
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Digital Signature</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-
+/* General Body Styling */
 body {
     font-family: 'Arial', sans-serif;
     background-color: #f3f7fb; /* Softer and modern background */
     margin: 0;
     padding: 0;
-    line-height: 1.6;
+    line-height: 1.6; /* Better text spacing */
     color: #2d3436; /* Neutral dark text color */
 }
+.header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background-color: #36438f;
+            color: #fff;
+            padding: 15px 30px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
 
-/* Main Container */
-.container {
-    width: 90%;
-    max-width: 1100px;
-    margin: 50px auto;
-    padding: 30px; /* Increased padding for spacious design */
-    background-color: #ffffff;
-    border-radius: 16px; /* More rounded corners for a modern look */
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15); /* Subtle but defined shadow */
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
+        .header a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 16px;
+            background-color: #e74c3c;
+            padding: 8px 16px;
+            border-radius: 8px;
+            transition: background-color 0.3s ease;
+        }
 
-.container:hover {
-    transform: translateY(-5px); /* Slight lift on hover */
-    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2); /* Stronger shadow on hover */
-}
+        .header a:hover {
+            background-color: #c0392b;
+        }
 
+        .header h1 {
+            text-align: center;
+            margin: 0 auto;
+            font-size: 1.8em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color:white;
+           
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1100px;
+            margin: 50px auto;
+            padding: 30px; /* Increased padding for spacious design */
+            background-color: #ffffff;
+            border-radius: 16px; /* More rounded corners for a modern look */
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15); /* Subtle but defined shadow */
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .container:hover {
+            transform: translateY(-5px); /* Slight lift on hover */
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2); /* Stronger shadow on hover */
+        }
+
+        /* Typing Effect Styling */
+        .typing-effect {
+            font-size: 2.2em;
+            text-align: center;
+            color: #34495e;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: bold;
+            overflow: hidden;
+            white-space: nowrap;
+            border-right: 4px solid #34495e;
+            animation: typing 3.5s steps(40, end), blink 0.75s step-end infinite;
+        }
+
+        @keyframes typing {
+            from { width: 0; }
+            to { width: 100%; }
+        }
+
+        @keyframes blink {
+            from, to { border-color: transparent; }
+            50% { border-color: #34495e; }
+        }
 /* Heading */
 h1 {
     text-align: center;
@@ -213,6 +270,85 @@ textarea {
     box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05); /* Soft inner shadow for focus */
     font-family: 'Courier New', Courier, monospace; /* Monospace font for code-like content */
 }
+h1 {
+            text-align: center;
+            color: #34495e;
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        /* Info Section Styling */
+        .info-section {
+            background-color: #f9fbfd;
+            border: 1px solid #dfe6e9;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .info-section h2 {
+            font-size: 1.8em;
+            color: #2c3e50;
+            margin-bottom: 15px;
+        }
+
+        .info-section p {
+            font-size: 1.1em;
+            color: #34495e;
+            margin-bottom: 10px;
+        }
+
+        .info-section ul {
+            margin: 10px 0;
+            padding-left: 20px;
+        }
+
+        .info-section ul li {
+            font-size: 1em;
+            color: #34495e;
+            margin-bottom: 8px;
+        }
+
+        /* Button Styling */
+        a.button, button {
+            display: inline-block;
+            padding: 12px 24px;
+            margin: 10px 5px;
+            font-size: 16px;
+            color: #fff;
+            background-color: #3498db;
+            border: none;
+            border-radius: 8px;
+            text-decoration: none;
+            text-align: center;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(52, 152, 219, 0.2);
+            transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        a.button:hover, button:hover {
+            background-color: #2980b9;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(41, 128, 185, 0.3);
+        }
+
+        a.button:active, button:active {
+            background-color: #1d6a96;
+            transform: translateY(0);
+            box-shadow: 0 4px 8px rgba(41, 128, 185, 0.2);
+        }
+
+        /* Options Section */
+        #options {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-top: 20px;
+        }
 
 /* Add Responsive Design for Smaller Screens */
 @media (max-width: 768px) {
@@ -250,13 +386,12 @@ textarea {
     </style>
 </head>
 <body>
+    <header class="header">
+        <a href="/logout">Logout</a>
+        <h1>Welcome To Digital Signatures Systems</h1>
+    </header>
     <div class="container">
-        <h1>Digital Signature Generation and Verification</h1>
-
-        <a href="/logout">
-            <button id="logout-button">Logout</button>
-        </a>
-        
+        <div class="typing-effect">Digital Signature Generation and Verification</div>
 
         <!-- Initial Options -->
         <div id="options">
@@ -303,6 +438,34 @@ textarea {
 
         
     </div>
+    <div class="container">
+       
+        <!-- Information Section -->
+        <div class="info-section">
+            <h2>What is a Digital Signature?</h2>
+            <p>A digital signature is a secure and encrypted method of verifying the authenticity and integrity of digital messages or documents. It ensures that the sender of the message is genuine and that the message has not been altered during transmission.</p>
+            <p>Digital signatures are widely used in modern systems for purposes such as:</p>
+            <ul>
+                <li>Ensuring secure communication in emails and documents.</li>
+                <li>Verifying the authenticity of software or files.</li>
+                <li>Facilitating secure online transactions.</li>
+                <li>Enabling co-signed documents with multiple verifications.</li>
+            </ul>
+            <h2>How Digital Signatures Work</h2>
+            <p>Digital signatures rely on cryptographic techniques, specifically public-key (asymmetric) encryption. Here is an overview of the process:</p>
+            <ul>
+                <li><strong>Key Pair Generation:</strong> Each user generates a pair of keys: a private key (kept secret) and a public key (shared with others).</li>
+                <li><strong>Signing:</strong> The sender creates a unique hash of the message and encrypts it using receiver public key. This encrypted hash becomes the digital signature.</li>
+                <li><strong>Verification:</strong> The receiver uses his private key to decrypt the signature and compares it with a hash of the received message. If they match, the message is authentic and unaltered.</li>
+            </ul>
+            <h2>Benefits of Digital Signatures</h2>
+            <ul>
+                <li><strong>Security:</strong> Ensures that messages are encrypted and safe from tampering.</li>
+                <li><strong>Authentication:</strong> Confirms the identity of the sender.</li>
+                <li><strong>Integrity:</strong> Verifies that the message has not been modified during transmission.</li>
+                <li><strong>Non-Repudiation:</strong> Provides proof that the sender cannot deny having signed the message.</li>
+            </ul>
+        </div>
 
     <script>
         // Show appropriate section
